@@ -43312,14 +43312,18 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 }
 # 2 "/home/kael/CLionProjects/Paint/main.cpp" 2
-# 13 "/home/kael/CLionProjects/Paint/main.cpp"
+# 12 "/home/kael/CLionProjects/Paint/main.cpp"
 
-# 13 "/home/kael/CLionProjects/Paint/main.cpp"
+# 12 "/home/kael/CLionProjects/Paint/main.cpp"
 void PrintImage (char board[17][17]){
     system ("clear");
     for (int i = 0; i < 17; i ++){
         for (int j = 0; j < 17; j ++){
-            std::cout << board[i][j];
+            if (board[i][j] == ' ') std::cout << " ";
+            else if (board[i][j] == '#')
+                std::cout << "\x1B[41m \033[0m";
+            else
+                std::cout << "\x1B[44m \033[0m";
         }
         std::cout << "\n";
     }

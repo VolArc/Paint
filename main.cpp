@@ -9,12 +9,15 @@
     #define PAUSE std::cin.get();
 #endif
 
-
 void PrintImage (char board[17][17]){
     system (CLEAR);
     for (int i = 0; i < 17; i ++){
         for (int j = 0; j < 17; j ++){
-            std::cout << board[i][j];
+            if (board[i][j] == ' ') std::cout << " ";
+            else if (board[i][j] == '#')
+                std::cout << "\x1B[41m \033[0m";
+            else
+                std::cout << "\x1B[44m \033[0m";
         }
         std::cout << "\n";
     }
