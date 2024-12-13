@@ -1,0 +1,18 @@
+{
+	"bmi-installation" : null,
+	"compiler-frontend-variant" : "GNU",
+	"compiler-id" : "GNU",
+	"compiler-simulate-id" : "",
+	"config" : "Debug",
+	"cxx-modules" : {},
+	"dir-cur-bld" : "/home/kael/CLionProjects/Paint/cmake-build-debug",
+	"dir-cur-src" : "/home/kael/CLionProjects/Paint",
+	"dir-top-bld" : "/home/kael/CLionProjects/Paint/cmake-build-debug",
+	"dir-top-src" : "/home/kael/CLionProjects/Paint",
+	"exports" : [],
+	"forward-modules-from-target-dirs" : [],
+	"include-dirs" : [],
+	"language" : "CXX",
+	"linked-target-dirs" : [],
+	"module-dir" : "/home/kael/CLionProjects/Paint/cmake-build-debug/CMakeFiles/Paint.dir"
+}

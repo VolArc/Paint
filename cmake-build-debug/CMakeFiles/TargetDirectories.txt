@@ -1,0 +1,3 @@
+/home/kael/CLionProjects/Paint/cmake-build-debug/CMakeFiles/Paint.dir
+/home/kael/CLionProjects/Paint/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/kael/CLionProjects/Paint/cmake-build-debug/CMakeFiles/rebuild_cache.dir

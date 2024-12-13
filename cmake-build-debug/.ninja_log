@@ -1,0 +1,13 @@
+# ninja log v6
+1	127	1734112417184124573	CMakeFiles/Paint.dir/main.cpp.o.ddi	690e9a8fe1ca38e8
+127	133	1734112417315126867	CMakeFiles/Paint.dir/CXX.dd	e46c0cfea8df38a4
+127	133	1734112417315126867	/home/kael/CLionProjects/Paint/cmake-build-debug/CMakeFiles/Paint.dir/CXXModules.json	e46c0cfea8df38a4
+127	133	1734112417315126867	CMakeFiles/Paint.dir/main.cpp.o.modmap	e46c0cfea8df38a4
+133	773	1734112417316126884	CMakeFiles/Paint.dir/main.cpp.o	7ae3c41eb8199395
+775	873	1734112417958138128	Paint	b09e3190647c99fd
+3	137	1734112682961596507	CMakeFiles/Paint.dir/main.cpp.o.ddi	690e9a8fe1ca38e8
+137	143	1734112683095598976	CMakeFiles/Paint.dir/CXX.dd	e46c0cfea8df38a4
+137	143	1734112683095598976	/home/kael/CLionProjects/Paint/cmake-build-debug/CMakeFiles/Paint.dir/CXXModules.json	e46c0cfea8df38a4
+137	143	1734112683095598976	CMakeFiles/Paint.dir/main.cpp.o.modmap	e46c0cfea8df38a4
+143	779	1734112683101599086	CMakeFiles/Paint.dir/main.cpp.o	7ae3c41eb8199395
+779	875	1734112683737610802	Paint	b09e3190647c99fd
