@@ -2,15 +2,18 @@
 #include <unistd.h>
 #include <cctype>
 #include <cstdio>
-#include <termios.h>
 #define uint unsigned int
 
 #ifdef _WIN32
+    #include <conio.h>
     #define CLEAR "cls"
     #define PAUSE system("pause");
+    #define GETCHAR getch()
 #else
     #define CLEAR "clear"
     #define PAUSE std::cin.get();
+    #include <termios.h>
+    #define GETCHAR getchar()
 #endif
 
 void PrintImage (char board[17][17], uint x = 17, uint y = 17, bool noPauses = false){
@@ -135,7 +138,7 @@ void UserImage () {
         for (int j = 0; j < 17; j++) {
             board[i][j] = '*';
             PrintImage(board, j, i, true);
-            char c = getchar();
+            char c = GETCHAR;
             if (c == '#' || c == ' ') {
                 board[i][j] = c;
             }
