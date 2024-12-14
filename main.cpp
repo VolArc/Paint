@@ -1,12 +1,8 @@
 #include <iostream>
 #include <unistd.h>
-#include <ctype.h>
-#include <errno.h>
-#include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cctype>
+#include <cstdio>
 #include <termios.h>
-#include <unistd.h>
 #define uint unsigned int
 
 #ifdef _WIN32
@@ -17,26 +13,39 @@
     #define PAUSE std::cin.get();
 #endif
 
-void PrintImage (char board[17][17]){
+void PrintImage (char board[17][17], uint x = 17, uint y = 17, bool noPauses = false){
     system (CLEAR);
+    std::cout << "00|";
     for (int i = 0; i < 17; i ++){
         for (int j = 0; j < 17; j ++){
             if (board[i][j] == ' ') std::cout << "  ";
             else if (board[i][j] == '#')
                 std::cout << "\x1B[41m  \033[0m";
-            else
+            else if (board[i][j] == '@')
                 std::cout << "\x1B[44m  \033[0m";
+            else if (board[i][j] == '*')
+                std::cout << "\x1B[47m  \033[0m";
+            else
+                std::cout << "\x1B[42m  \033[0m";
         }
-        std::cout << "\n";
+        printf("|\n");
+        if (i < 16) printf("%02d|", i + 1);
+        else if (y != 17 && x != 17)
+            printf("X : %02d; Y : %02d", x, y);
     }
-    PAUSE;
+
+    if (!noPauses) PAUSE;
 }
 
 void Fill (uint x, uint y, char board[17][17]) {
+    if (x == 0 || y == 0 || x == 16 || y == 16) {
+        board[y][x] = '#';
+        return;
+    }
     char c = board[y][x];
     if (c != '#' && c != '@'){
         board[y][x] = '@';
-        PrintImage(board);
+        PrintImage(board, x , y);
         Fill (x - 1, y, board);
         Fill (x + 1, y, board);
         Fill (x, y - 1, board);
@@ -44,15 +53,8 @@ void Fill (uint x, uint y, char board[17][17]) {
     }
 }
 
-int main () {
-#ifdef __linux__
-    struct termios oldt, newt;
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-#endif
-    char board1[17][17] = {
+void Paint1 () {
+    char board[17][17] = {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', '#', '#', '#', ' ', '#', '#', '#', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', '#', ' ', ' ', '#', '#', '#', ' ', ' ', '#', ' ', ' ', ' ', ' '},
@@ -71,11 +73,11 @@ int main () {
         {' ', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', ' '},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
     };
-    Fill (10, 3, board1);
-    PrintImage (board1);
-    PAUSE
-    system (CLEAR);
-    char board2[17][17] = {
+    Fill (10, 3, board);
+}
+
+void Paint2 () {
+    char board[17][17] = {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', '#', '#', '#', ' ', '#', '#', '#', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', '#', ' ', ' ', '#', '#', '#', ' ', ' ', '#', ' ', ' ', ' ', ' '},
@@ -94,8 +96,80 @@ int main () {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
     };
-    Fill (2, 5, board2);
-    PrintImage (board2);
+    Fill (2, 5, board);
+    PrintImage (board);
+}
+
+void UserImage () {
+    std::cout << "You're going to create your own image.\nRules:\n1. Press # to create a border\n2. Press ^ to create a startpoint\n3. Startpoint cannot be placed on the border of the image\n4. There can be only one startpoint";
+    PAUSE;
+    char board[][17] = {
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+    };
+
+    int startPointX = -1, startPointY = -1;
+
+    for (int i = 0; i < 17; i++) {
+        for (int j = 0; j < 17; j++) {
+            board[i][j] = '*';
+            PrintImage(board, j, i, true);
+            char c = getchar();
+            if (c == '#' || c == ' ') {
+                board[i][j] = c;
+            }
+            else if (c == '^') {
+                if (startPointX == -1 && startPointY == -1 && i != 0 && j != 0 && i != 16 && j != 16) {
+                    board[i][j] = c;
+                    startPointX = j;
+                    startPointY = i;
+                }
+                else j --;
+            }
+            else j --;
+            if (board[i][j] == '*')
+                board[i][j] = ' ';
+        }
+    }
+    PrintImage(board, 17, 17, true);
+    std::cout << "Ready?\n";
+    PAUSE
+    std::cout << "I can't hear you!\n";
+    PAUSE
+    Fill(startPointX, startPointY, board);
+    PrintImage(board, true);
+}
+
+int main () {
+#ifdef __linux__
+    termios oldt, newt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+#endif
+
+    Paint1();
+    system (CLEAR);
+    Paint2();
+    system (CLEAR);
+    UserImage();
+
 #ifdef __linux__
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
 #endif

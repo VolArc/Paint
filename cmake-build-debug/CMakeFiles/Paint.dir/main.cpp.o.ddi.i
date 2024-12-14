@@ -44721,109 +44721,16 @@ extern __pid_t gettid (void) noexcept (true);
 
 }
 # 3 "/home/kael/CLionProjects/Paint/main.cpp" 2
-
-
-# 1 "/usr/lib/gcc/x86_64-redhat-linux/14/include/limits.h" 1 3 4
-# 34 "/usr/lib/gcc/x86_64-redhat-linux/14/include/limits.h" 3 4
-# 1 "/usr/lib/gcc/x86_64-redhat-linux/14/include/syslimits.h" 1 3 4
-
-
-
-
-
-
-# 1 "/usr/lib/gcc/x86_64-redhat-linux/14/include/limits.h" 1 3 4
-# 210 "/usr/lib/gcc/x86_64-redhat-linux/14/include/limits.h" 3 4
-# 1 "/usr/include/limits.h" 1 3 4
-# 26 "/usr/include/limits.h" 3 4
-# 1 "/usr/include/bits/libc-header-start.h" 1 3 4
-# 27 "/usr/include/limits.h" 2 3 4
-# 195 "/usr/include/limits.h" 3 4
-# 1 "/usr/include/bits/posix1_lim.h" 1 3 4
-# 27 "/usr/include/bits/posix1_lim.h" 3 4
-# 1 "/usr/include/bits/wordsize.h" 1 3 4
-# 28 "/usr/include/bits/posix1_lim.h" 2 3 4
-# 161 "/usr/include/bits/posix1_lim.h" 3 4
-# 1 "/usr/include/bits/local_lim.h" 1 3 4
-# 38 "/usr/include/bits/local_lim.h" 3 4
-# 1 "/usr/include/linux/limits.h" 1 3 4
-# 39 "/usr/include/bits/local_lim.h" 2 3 4
-# 162 "/usr/include/bits/posix1_lim.h" 2 3 4
-# 196 "/usr/include/limits.h" 2 3 4
-
-
-
-# 1 "/usr/include/bits/posix2_lim.h" 1 3 4
-# 200 "/usr/include/limits.h" 2 3 4
-
-
-
-# 1 "/usr/include/bits/xopen_lim.h" 1 3 4
-# 64 "/usr/include/bits/xopen_lim.h" 3 4
-# 1 "/usr/include/bits/uio_lim.h" 1 3 4
-# 65 "/usr/include/bits/xopen_lim.h" 2 3 4
-# 204 "/usr/include/limits.h" 2 3 4
-# 211 "/usr/lib/gcc/x86_64-redhat-linux/14/include/limits.h" 2 3 4
-# 8 "/usr/lib/gcc/x86_64-redhat-linux/14/include/syslimits.h" 2 3 4
-# 35 "/usr/lib/gcc/x86_64-redhat-linux/14/include/limits.h" 2 3 4
-# 6 "/home/kael/CLionProjects/Paint/main.cpp" 2
-
-# 1 "/usr/include/c++/14/stdlib.h" 1 3
-# 36 "/usr/include/c++/14/stdlib.h" 3
-# 1 "/usr/include/c++/14/cstdlib" 1 3
-# 39 "/usr/include/c++/14/cstdlib" 3
+# 1 "/usr/include/c++/14/cctype" 1 3
+# 39 "/usr/include/c++/14/cctype" 3
        
-# 40 "/usr/include/c++/14/cstdlib" 3
-# 37 "/usr/include/c++/14/stdlib.h" 2 3
-
-using std::abort;
-using std::atexit;
-using std::exit;
-
-
-  using std::at_quick_exit;
-
-
-  using std::quick_exit;
-
-
-  using std::_Exit;
-
-
-
-
-using std::div_t;
-using std::ldiv_t;
-
-using std::abs;
-using std::atof;
-using std::atoi;
-using std::atol;
-using std::bsearch;
-using std::calloc;
-using std::div;
-using std::free;
-using std::getenv;
-using std::labs;
-using std::ldiv;
-using std::malloc;
-
-using std::mblen;
-using std::mbstowcs;
-using std::mbtowc;
-
-using std::qsort;
-using std::rand;
-using std::realloc;
-using std::srand;
-using std::strtod;
-using std::strtol;
-using std::strtoul;
-using std::system;
-
-using std::wcstombs;
-using std::wctomb;
-# 8 "/home/kael/CLionProjects/Paint/main.cpp" 2
+# 40 "/usr/include/c++/14/cctype" 3
+# 4 "/home/kael/CLionProjects/Paint/main.cpp" 2
+# 1 "/usr/include/c++/14/cstdio" 1 3
+# 39 "/usr/include/c++/14/cstdio" 3
+       
+# 40 "/usr/include/c++/14/cstdio" 3
+# 5 "/home/kael/CLionProjects/Paint/main.cpp" 2
 # 1 "/usr/include/termios.h" 1 3 4
 # 35 "/usr/include/termios.h" 3 4
 extern "C" {
@@ -44935,30 +44842,43 @@ extern __pid_t tcgetsid (int __fd) noexcept (true);
 
 
 }
-# 9 "/home/kael/CLionProjects/Paint/main.cpp" 2
-# 20 "/home/kael/CLionProjects/Paint/main.cpp"
+# 6 "/home/kael/CLionProjects/Paint/main.cpp" 2
+# 16 "/home/kael/CLionProjects/Paint/main.cpp"
 
-# 20 "/home/kael/CLionProjects/Paint/main.cpp"
-void PrintImage (char board[17][17]){
+# 16 "/home/kael/CLionProjects/Paint/main.cpp"
+void PrintImage (char board[17][17], unsigned int x = 17, unsigned int y = 17, bool noPauses = false){
     system ("clear");
+    std::cout << "00|";
     for (int i = 0; i < 17; i ++){
         for (int j = 0; j < 17; j ++){
             if (board[i][j] == ' ') std::cout << "  ";
             else if (board[i][j] == '#')
                 std::cout << "\x1B[41m  \033[0m";
-            else
+            else if (board[i][j] == '@')
                 std::cout << "\x1B[44m  \033[0m";
+            else if (board[i][j] == '*')
+                std::cout << "\x1B[47m  \033[0m";
+            else
+                std::cout << "\x1B[42m  \033[0m";
         }
-        std::cout << "\n";
+        printf("|\n");
+        if (i < 16) printf("%02d|", i + 1);
+        else if (y != 17 && x != 17)
+            printf("X : %02d; Y : %02d", x, y);
     }
-    std::cin.get();;
+
+    if (!noPauses) std::cin.get();;
 }
 
 void Fill (unsigned int x, unsigned int y, char board[17][17]) {
+    if (x == 0 || y == 0 || x == 16 || y == 16) {
+        board[y][x] = '#';
+        return;
+    }
     char c = board[y][x];
     if (c != '#' && c != '@'){
         board[y][x] = '@';
-        PrintImage(board);
+        PrintImage(board, x , y);
         Fill (x - 1, y, board);
         Fill (x + 1, y, board);
         Fill (x, y - 1, board);
@@ -44966,35 +44886,8 @@ void Fill (unsigned int x, unsigned int y, char board[17][17]) {
     }
 }
 
-int main () {
-
-    struct termios oldt, newt;
-    tcgetattr(
-# 50 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
-             0
-# 50 "/home/kael/CLionProjects/Paint/main.cpp"
-                         , &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(
-# 52 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
-                     0000002 
-# 52 "/home/kael/CLionProjects/Paint/main.cpp"
-                            | 
-# 52 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
-                              0000010
-# 52 "/home/kael/CLionProjects/Paint/main.cpp"
-                                  );
-    tcsetattr(
-# 53 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
-             0
-# 53 "/home/kael/CLionProjects/Paint/main.cpp"
-                         , 
-# 53 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
-                           0
-# 53 "/home/kael/CLionProjects/Paint/main.cpp"
-                                  , &newt);
-
-    char board1[17][17] = {
+void Paint1 () {
+    char board[17][17] = {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', '#', '#', '#', ' ', '#', '#', '#', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', '#', ' ', ' ', '#', '#', '#', ' ', ' ', '#', ' ', ' ', ' ', ' '},
@@ -45013,11 +44906,11 @@ int main () {
         {' ', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', ' '},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
     };
-    Fill (10, 3, board1);
-    PrintImage (board1);
-    std::cin.get();
-    system ("clear");
-    char board2[17][17] = {
+    Fill (10, 3, board);
+}
+
+void Paint2 () {
+    char board[17][17] = {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', '#', '#', '#', ' ', '#', '#', '#', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', '#', ' ', ' ', '#', '#', '#', ' ', ' ', '#', ' ', ' ', ' ', ' '},
@@ -45036,17 +44929,109 @@ int main () {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
     };
-    Fill (2, 5, board2);
-    PrintImage (board2);
+    Fill (2, 5, board);
+    PrintImage (board);
+}
+
+void UserImage () {
+    std::cout << "You're going to create your own image.\nRules:\n1. Press # to create a border\n2. Press ^ to create a startpoint\n3. Startpoint cannot be placed on the border of the image\n4. There can be only one startpoint";
+    std::cin.get();;
+    char board[][17] = {
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
+    };
+
+    int startPointX = -1, startPointY = -1;
+
+    for (int i = 0; i < 17; i++) {
+        for (int j = 0; j < 17; j++) {
+            board[i][j] = '*';
+            PrintImage(board, j, i, true);
+            char c = getchar();
+            if (c == '#' || c == ' ') {
+                board[i][j] = c;
+            }
+            else if (c == '^') {
+                if (startPointX == -1 && startPointY == -1 && i != 0 && j != 0 && i != 16 && j != 16) {
+                    board[i][j] = c;
+                    startPointX = j;
+                    startPointY = i;
+                }
+                else j --;
+            }
+            else j --;
+            if (board[i][j] == '*')
+                board[i][j] = ' ';
+        }
+    }
+    PrintImage(board, 17, 17, true);
+    std::cout << "Ready?\n";
+    std::cin.get();
+    std::cout << "I can't hear you!\n";
+    std::cin.get();
+    Fill(startPointX, startPointY, board);
+    PrintImage(board, true);
+}
+
+int main () {
+
+    termios oldt, newt;
+    tcgetattr(
+# 161 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+             0
+# 161 "/home/kael/CLionProjects/Paint/main.cpp"
+                         , &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(
+# 163 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+                     0000002 
+# 163 "/home/kael/CLionProjects/Paint/main.cpp"
+                            | 
+# 163 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+                              0000010
+# 163 "/home/kael/CLionProjects/Paint/main.cpp"
+                                  );
+    tcsetattr(
+# 164 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+             0
+# 164 "/home/kael/CLionProjects/Paint/main.cpp"
+                         , 
+# 164 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+                           0
+# 164 "/home/kael/CLionProjects/Paint/main.cpp"
+                                  , &newt);
+
+
+    Paint1();
+    system ("clear");
+    Paint2();
+    system ("clear");
+    UserImage();
+
 
     tcsetattr(
-# 100 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 174 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 100 "/home/kael/CLionProjects/Paint/main.cpp"
+# 174 "/home/kael/CLionProjects/Paint/main.cpp"
                          , 
-# 100 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 174 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                            0
-# 100 "/home/kael/CLionProjects/Paint/main.cpp"
+# 174 "/home/kael/CLionProjects/Paint/main.cpp"
                                   , &oldt);
 
  return 0;

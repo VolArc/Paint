@@ -135,16 +135,10 @@ CMakeFiles/Paint.dir/main.cpp.o.ddi: \
  /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
  /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
  /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h \
- /usr/include/linux/close_range.h \
- /usr/lib/gcc/x86_64-redhat-linux/14/include/limits.h \
- /usr/lib/gcc/x86_64-redhat-linux/14/include/syslimits.h \
- /usr/include/limits.h /usr/include/bits/posix1_lim.h \
- /usr/include/bits/local_lim.h /usr/include/linux/limits.h \
- /usr/include/bits/posix2_lim.h /usr/include/bits/xopen_lim.h \
- /usr/include/bits/uio_lim.h /usr/include/c++/14/stdlib.h \
- /usr/include/termios.h /usr/include/bits/termios.h \
- /usr/include/bits/termios-struct.h /usr/include/bits/termios-c_cc.h \
- /usr/include/bits/termios-c_iflag.h /usr/include/bits/termios-c_oflag.h \
- /usr/include/bits/termios-baud.h /usr/include/bits/termios-c_cflag.h \
- /usr/include/bits/termios-c_lflag.h /usr/include/bits/termios-tcflow.h \
- /usr/include/bits/termios-misc.h /usr/include/sys/ttydefaults.h
+ /usr/include/linux/close_range.h /usr/include/termios.h \
+ /usr/include/bits/termios.h /usr/include/bits/termios-struct.h \
+ /usr/include/bits/termios-c_cc.h /usr/include/bits/termios-c_iflag.h \
+ /usr/include/bits/termios-c_oflag.h /usr/include/bits/termios-baud.h \
+ /usr/include/bits/termios-c_cflag.h /usr/include/bits/termios-c_lflag.h \
+ /usr/include/bits/termios-tcflow.h /usr/include/bits/termios-misc.h \
+ /usr/include/sys/ttydefaults.h
