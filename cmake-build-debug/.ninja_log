@@ -41,3 +41,9 @@
 119	125	1734113716146834244	CMakeFiles/Paint.dir/main.cpp.o.modmap	e46c0cfea8df38a4
 125	760	1734113716152834352	CMakeFiles/Paint.dir/main.cpp.o	7ae3c41eb8199395
 760	856	1734113716787845721	Paint	b09e3190647c99fd
+22	287	1734167947271988523	CMakeFiles/Paint.dir/main.cpp.o.ddi	690e9a8fe1ca38e8
+287	297	1734167947537005945	CMakeFiles/Paint.dir/CXX.dd	e46c0cfea8df38a4
+287	297	1734167947537005945	/home/kael/CLionProjects/Paint/cmake-build-debug/CMakeFiles/Paint.dir/CXXModules.json	e46c0cfea8df38a4
+287	297	1734167947537005945	CMakeFiles/Paint.dir/main.cpp.o.modmap	e46c0cfea8df38a4
+297	1271	1734167947548006668	CMakeFiles/Paint.dir/main.cpp.o	7ae3c41eb8199395
+1272	1402	1734167948522070700	Paint	b09e3190647c99fd

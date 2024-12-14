@@ -1,4 +1,12 @@
 #include <iostream>
+#include <unistd.h>
+#include <ctype.h>
+#include <errno.h>
+#include <limits.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <termios.h>
+#include <unistd.h>
 #define uint unsigned int
 
 #ifdef _WIN32
@@ -13,11 +21,11 @@ void PrintImage (char board[17][17]){
     system (CLEAR);
     for (int i = 0; i < 17; i ++){
         for (int j = 0; j < 17; j ++){
-            if (board[i][j] == ' ') std::cout << " ";
+            if (board[i][j] == ' ') std::cout << "  ";
             else if (board[i][j] == '#')
-                std::cout << "\x1B[41m \033[0m";
+                std::cout << "\x1B[41m  \033[0m";
             else
-                std::cout << "\x1B[44m \033[0m";
+                std::cout << "\x1B[44m  \033[0m";
         }
         std::cout << "\n";
     }
@@ -37,6 +45,13 @@ void Fill (uint x, uint y, char board[17][17]) {
 }
 
 int main () {
+#ifdef __linux__
+    struct termios oldt, newt;
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+#endif
     char board1[17][17] = {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', '#', '#', '#', ' ', '#', '#', '#', ' ', ' ', ' ', ' ', ' '},
@@ -81,5 +96,8 @@ int main () {
     };
     Fill (2, 5, board2);
     PrintImage (board2);
+#ifdef __linux__
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+#endif
 	return 0;
 }
