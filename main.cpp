@@ -15,8 +15,15 @@
 
 void PrintImage (char board[17][17], uint x = 17, uint y = 17, bool noPauses = false){
     system (CLEAR);
-    std::cout << "00|";
+    std::cout << "   ";
+    for (uint i = 0; i < 17; i++) {
+        if (i == x) printf("\x1B[42m%02d\033[0m", i);
+        else printf("%02d", i);
+    }
+    printf("\n");
     for (int i = 0; i < 17; i ++){
+        if (y == i) printf("\x1B[42m%02d\033[0m|", i);
+        else printf("%02d|", i);
         for (int j = 0; j < 17; j ++){
             if (board[i][j] == ' ') std::cout << "  ";
             else if (board[i][j] == '#')
@@ -29,8 +36,7 @@ void PrintImage (char board[17][17], uint x = 17, uint y = 17, bool noPauses = f
                 std::cout << "\x1B[42m  \033[0m";
         }
         printf("|\n");
-        if (i < 16) printf("%02d|", i + 1);
-        else if (y != 17 && x != 17)
+        if (y != 17 && x != 17 && i == 16)
             printf("X : %02d; Y : %02d", x, y);
     }
 
@@ -151,8 +157,12 @@ void UserImage () {
     PAUSE
     std::cout << "I can't hear you!\n";
     PAUSE
+    if (startPointX == -1 && startPointY == -1) {
+        startPointX = 1;
+        startPointY = 1;
+    }
     Fill(startPointX, startPointY, board);
-    PrintImage(board, true);
+    PrintImage(board, 17, 17, true);
 }
 
 int main () {
