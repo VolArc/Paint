@@ -44731,7 +44731,7 @@ extern __pid_t gettid (void) noexcept (true);
        
 # 40 "/usr/include/c++/14/cstdio" 3
 # 5 "/home/kael/CLionProjects/Paint/main.cpp" 2
-# 15 "/home/kael/CLionProjects/Paint/main.cpp"
+# 16 "/home/kael/CLionProjects/Paint/main.cpp"
 # 1 "/usr/include/termios.h" 1 3 4
 # 35 "/usr/include/termios.h" 3 4
 extern "C" {
@@ -44843,12 +44843,12 @@ extern __pid_t tcgetsid (int __fd) noexcept (true);
 
 
 }
-# 16 "/home/kael/CLionProjects/Paint/main.cpp" 2
+# 17 "/home/kael/CLionProjects/Paint/main.cpp" 2
 
 
 
 
-# 19 "/home/kael/CLionProjects/Paint/main.cpp"
+# 20 "/home/kael/CLionProjects/Paint/main.cpp"
 void PrintImage (char board[17][17], unsigned int x = 17, unsigned int y = 17, bool noPauses = false, std::string message = "", unsigned int highlightX = -1, unsigned int highlightY = -1) {
     system ("clear");
     std::cout << "   ";
@@ -45093,7 +45093,7 @@ int Menu(char options[][1024], int numOptions, std::string message = "") {
                 chosenOption = (chosenOption + 1) % numOptions;
                 break;
             }
-            case '\n':
+            case 'e':
                 return chosenOption;
             default: break;
         }
@@ -45106,33 +45106,33 @@ int main () {
 
     termios oldt, newt;
     tcgetattr(
-# 275 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 276 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 275 "/home/kael/CLionProjects/Paint/main.cpp"
+# 276 "/home/kael/CLionProjects/Paint/main.cpp"
                          , &oldt);
     newt = oldt;
     newt.c_lflag &= ~(
-# 277 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 278 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                      0000002 
-# 277 "/home/kael/CLionProjects/Paint/main.cpp"
+# 278 "/home/kael/CLionProjects/Paint/main.cpp"
                             | 
-# 277 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 278 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                               0000010
-# 277 "/home/kael/CLionProjects/Paint/main.cpp"
+# 278 "/home/kael/CLionProjects/Paint/main.cpp"
                                   );
     tcsetattr(
-# 278 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 279 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 278 "/home/kael/CLionProjects/Paint/main.cpp"
+# 279 "/home/kael/CLionProjects/Paint/main.cpp"
                          , 
-# 278 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 279 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                            0
-# 278 "/home/kael/CLionProjects/Paint/main.cpp"
+# 279 "/home/kael/CLionProjects/Paint/main.cpp"
                                   , &newt);
 
 
     char options[][1024] = {"Пример 1", "Пример 2", "Ввод рисунка", "Выход"};
-    std::string message = "Для перемещения между пунктами использовать W и S. Если не работает, попробуйте поменять раскладку.";
+    std::string message = "Для перемещения между пунктами использовать w и s. Для выбора пункта нажмите e (латинскую). Если не работает, попробуйте поменять раскладку.";
     bool isRunning = true;
 
     while (isRunning) {
@@ -45160,13 +45160,13 @@ int main () {
 
 
     tcsetattr(
-# 309 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 310 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 309 "/home/kael/CLionProjects/Paint/main.cpp"
+# 310 "/home/kael/CLionProjects/Paint/main.cpp"
                          , 
-# 309 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 310 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                            0
-# 309 "/home/kael/CLionProjects/Paint/main.cpp"
+# 310 "/home/kael/CLionProjects/Paint/main.cpp"
                                   , &oldt);
 
  return 0;

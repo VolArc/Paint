@@ -5,6 +5,7 @@
 #define uint unsigned int
 
 #ifdef _WIN32
+    #include <windows.h>
     #include <conio.h>
     #define CLEAR "cls"
     #define PAUSE system("pause");
@@ -239,7 +240,7 @@ int Menu(char options[][1024], int numOptions, std::string message = "") {
     int chosenOption = 0;
 
     while (true) {
-        system("clear");
+        system(CLEAR);
 
         for (int i = 0; i < numOptions; i++) {
             if (i == chosenOption) {
@@ -260,7 +261,7 @@ int Menu(char options[][1024], int numOptions, std::string message = "") {
                 chosenOption = (chosenOption + 1) % numOptions;
                 break;
             }
-            case '\n':
+            case 'e':
                 return chosenOption;
             default: break;
         }
@@ -279,7 +280,7 @@ int main () {
 #endif
 
     char options[][1024] = {"Пример 1", "Пример 2", "Ввод рисунка", "Выход"};
-    std::string message = "Для перемещения между пунктами использовать W и S. Если не работает, попробуйте поменять раскладку.";
+    std::string message = "Для перемещения между пунктами использовать w и s. Для выбора пункта нажмите e (латинскую). Если не работает, попробуйте поменять раскладку.";
     bool isRunning = true;
 
     while (isRunning) {
