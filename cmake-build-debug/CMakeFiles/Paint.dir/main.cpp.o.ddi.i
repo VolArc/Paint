@@ -45007,11 +45007,11 @@ void UserImage () {
                 break;
             }
             case '^': {
-                if (startPointX == -1 && startPointY == -1 && y != 0 && x != 0 && y != 16 && x != 16) {
+                if (y != 0 && x != 0 && y != 16 && x != 16) {
+                    if (startPointX != -1 && startPointY != -1) board[startPointY][startPointX] = ' ';
                     board[y][x] = '^';
-                    startPointX = x;
+                    startPointX = x ++;
                     startPointY = y;
-                    x ++;
                 }
                 break;
             }
@@ -45027,8 +45027,10 @@ void UserImage () {
                 break;
             }
             case 'b': {
-                if (startPointX == -1 && startPointY == -1)
+                if (startPointX == -1 && startPointY == -1) {
                     std::cout << "\n\033[37m\033[41mНет стартовой точки!!!\033[0m\n";
+                    std::cin.get();;
+                }
                 else startPaint = true;
                 break;
             }
@@ -45104,28 +45106,28 @@ int main () {
 
     termios oldt, newt;
     tcgetattr(
-# 273 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 275 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 273 "/home/kael/CLionProjects/Paint/main.cpp"
+# 275 "/home/kael/CLionProjects/Paint/main.cpp"
                          , &oldt);
     newt = oldt;
     newt.c_lflag &= ~(
-# 275 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 277 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                      0000002 
-# 275 "/home/kael/CLionProjects/Paint/main.cpp"
+# 277 "/home/kael/CLionProjects/Paint/main.cpp"
                             | 
-# 275 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 277 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                               0000010
-# 275 "/home/kael/CLionProjects/Paint/main.cpp"
+# 277 "/home/kael/CLionProjects/Paint/main.cpp"
                                   );
     tcsetattr(
-# 276 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 278 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 276 "/home/kael/CLionProjects/Paint/main.cpp"
+# 278 "/home/kael/CLionProjects/Paint/main.cpp"
                          , 
-# 276 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 278 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                            0
-# 276 "/home/kael/CLionProjects/Paint/main.cpp"
+# 278 "/home/kael/CLionProjects/Paint/main.cpp"
                                   , &newt);
 
 
@@ -45158,13 +45160,13 @@ int main () {
 
 
     tcsetattr(
-# 307 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 309 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 307 "/home/kael/CLionProjects/Paint/main.cpp"
+# 309 "/home/kael/CLionProjects/Paint/main.cpp"
                          , 
-# 307 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 309 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                            0
-# 307 "/home/kael/CLionProjects/Paint/main.cpp"
+# 309 "/home/kael/CLionProjects/Paint/main.cpp"
                                   , &oldt);
 
  return 0;

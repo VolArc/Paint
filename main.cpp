@@ -174,11 +174,11 @@ void UserImage () {
                 break;
             }
             case '^': {
-                if (startPointX == -1 && startPointY == -1 && y != 0 && x != 0 && y != 16 && x != 16) {
+                if (y != 0 && x != 0 && y != 16 && x != 16) {
+                    if (startPointX != -1 && startPointY != -1) board[startPointY][startPointX] = ' ';
                     board[y][x] = '^';
-                    startPointX = x;
+                    startPointX = x ++;
                     startPointY = y;
-                    x ++;
                 }
                 break;
             }
@@ -194,8 +194,10 @@ void UserImage () {
                 break;
             }
             case 'b': {
-                if (startPointX == -1 && startPointY == -1)
+                if (startPointX == -1 && startPointY == -1) {
                     std::cout << "\n\033[37m\033[41mНет стартовой точки!!!\033[0m\n";
+                    PAUSE;
+                }
                 else startPaint = true;
                 break;
             }
