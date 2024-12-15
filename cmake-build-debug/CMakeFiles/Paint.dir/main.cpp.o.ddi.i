@@ -44731,6 +44731,7 @@ extern __pid_t gettid (void) noexcept (true);
        
 # 40 "/usr/include/c++/14/cstdio" 3
 # 5 "/home/kael/CLionProjects/Paint/main.cpp" 2
+# 15 "/home/kael/CLionProjects/Paint/main.cpp"
 # 1 "/usr/include/termios.h" 1 3 4
 # 35 "/usr/include/termios.h" 3 4
 extern "C" {
@@ -44842,11 +44843,13 @@ extern __pid_t tcgetsid (int __fd) noexcept (true);
 
 
 }
-# 6 "/home/kael/CLionProjects/Paint/main.cpp" 2
-# 16 "/home/kael/CLionProjects/Paint/main.cpp"
+# 16 "/home/kael/CLionProjects/Paint/main.cpp" 2
 
-# 16 "/home/kael/CLionProjects/Paint/main.cpp"
-void PrintImage (char board[17][17], unsigned int x = 17, unsigned int y = 17, bool noPauses = false){
+
+
+
+# 19 "/home/kael/CLionProjects/Paint/main.cpp"
+void PrintImage (char board[17][17], unsigned int x = 17, unsigned int y = 17, bool noPauses = false, std::string message = "", unsigned int highlightX = -1, unsigned int highlightY = -1) {
     system ("clear");
     std::cout << "   ";
     for (unsigned int i = 0; i < 17; i++) {
@@ -44858,19 +44861,35 @@ void PrintImage (char board[17][17], unsigned int x = 17, unsigned int y = 17, b
         if (y == i) printf("\x1B[42m%02d\033[0m|", i);
         else printf("%02d|", i);
         for (int j = 0; j < 17; j ++){
-            if (board[i][j] == ' ') std::cout << "  ";
-            else if (board[i][j] == '#')
-                std::cout << "\x1B[41m  \033[0m";
-            else if (board[i][j] == '@')
-                std::cout << "\x1B[44m  \033[0m";
-            else if (board[i][j] == '*')
+            if (i == highlightY && j == highlightX) {
                 std::cout << "\x1B[47m  \033[0m";
-            else
-                std::cout << "\x1B[42m  \033[0m";
+                continue;
+            }
+            switch (board[i][j]) {
+                case ' ': {
+                    std::cout << "  ";
+                    break;
+                }
+                case '#': {
+                    std::cout << "\x1B[41m  \033[0m";
+                    break;
+                }
+                case '@': {
+                    std::cout << "\x1B[44m  \033[0m";
+                    break;
+                }
+                case '^': {
+                    std::cout << "\x1B[42m  \033[0m";
+                    break;
+                }
+            }
         }
         printf("|\n");
-        if (y != 17 && x != 17 && i == 16)
-            printf("X : %02d; Y : %02d", x, y);
+        if (i == 16) {
+            if (y != 17 && x != 17)
+                printf("X : %02d; Y : %02d\n", x, y);
+            std::cout << message;
+        }
     }
 
     if (!noPauses) std::cin.get();;
@@ -44940,9 +44959,9 @@ void Paint2 () {
 }
 
 void UserImage () {
-    std::cout << "You're going to create your own image.\nRules:\n1. Press # to create a border\n2. Press ^ to create a startpoint\n3. Startpoint cannot be placed on the border of the image\n4. There can be only one startpoint";
+    std::cout << "\nВВОД РИСУНКА.\nИнструкция:\n1. Введите # чтобы создать границу\n2. Нажмите ^ чтобы обозначить стартовую точку\n3. Стартовая точка не может быть расположена на границе рисунка\n4. Стартовая точка может быть только одна\n";
     std::cin.get();;
-    char board[][17] = {
+    const char _template[17][17] = {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -44961,87 +44980,191 @@ void UserImage () {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
     };
+    char board[17][17] = {};
+    std::copy(&_template[0][0], &_template[0][0]+17*17,&board[0][0]);
 
     int startPointX = -1, startPointY = -1;
+    bool startPaint = false;
+    int y = 0, x = 0;
 
-    for (int i = 0; i < 17; i++) {
-        for (int j = 0; j < 17; j++) {
-            board[i][j] = '*';
-            PrintImage(board, j, i, true);
-            char c = getchar();
-            if (c == '#' || c == ' ') {
-                board[i][j] = c;
-            }
-            else if (c == '^') {
-                if (startPointX == -1 && startPointY == -1 && i != 0 && j != 0 && i != 16 && j != 16) {
-                    board[i][j] = c;
-                    startPointX = j;
-                    startPointY = i;
+    while (!startPaint) {
+        PrintImage(board, x, y, true, "r - Стереть рисунок\nf - Стереть строку\nq - Вернуться в меню\nb - Начать закраску\nw, s, a, d - Вверх, вниз, влево, вправо", x, y);
+        switch (getchar()) {
+            case '#': {
+                if (board[y][x] == '^') {
+                    startPointX = -1;
+                    startPointY = -1;
                 }
-                else j --;
+                board[y][x++] = '#';
+                break;
             }
-            else j --;
-            if (board[i][j] == '*')
-                board[i][j] = ' ';
+            case ' ': {
+                if (board[y][x] == '^') {
+                    startPointX = -1;
+                    startPointY = -1;
+                }
+                board[y][x++] = ' ';
+                break;
+            }
+            case '^': {
+                if (startPointX == -1 && startPointY == -1 && y != 0 && x != 0 && y != 16 && x != 16) {
+                    board[y][x] = '^';
+                    startPointX = x;
+                    startPointY = y;
+                    x ++;
+                }
+                break;
+            }
+            case 'r': {
+                y = 0;
+                x = 0;
+                std::copy(&_template[0][0], &_template[0][0]+17*17,&board[0][0]);
+                break;
+            }
+            case 'f': {
+                x = 0;
+                std::copy(&_template[y][0], &_template[y][16], &board[y][0]);
+                break;
+            }
+            case 'b': {
+                if (startPointX == -1 && startPointY == -1)
+                    std::cout << "\n\033[37m\033[41mНет стартовой точки!!!\033[0m\n";
+                else startPaint = true;
+                break;
+            }
+            case 'w': {
+                y --;
+                break;
+            }
+            case 's': {
+                y ++;
+                break;
+            }
+            case 'a': {
+                x --;
+                break;
+            }
+            case 'd': {
+                x ++;
+                break;
+            }
+            case 'q': {
+                return;
+            }
+            default: break;
         }
-    }
-    PrintImage(board, 17, 17, true);
-    std::cout << "Ready?\n";
-    std::cin.get();
-    std::cout << "I can't hear you!\n";
-    std::cin.get();
-    if (startPointX == -1 && startPointY == -1) {
-        startPointX = 1;
-        startPointY = 1;
+        if (y == 16 && x == 16) {
+            y = 0;
+            x = -1;
+        }
+        if (x == 17) y ++;
+        else if (x == -1) y --;
+        x = (x + 17) % 17;
+        y = (y + 17) % 17;
     }
     Fill(startPointX, startPointY, board);
     PrintImage(board, 17, 17, true);
 }
 
+int Menu(char options[][1024], int numOptions, std::string message = "") {
+    int chosenOption = 0;
+
+    while (true) {
+        system("clear");
+
+        for (int i = 0; i < numOptions; i++) {
+            if (i == chosenOption) {
+                printf("\x1b[36m%d. %s\n\x1b[0m", i, options[i]);
+            } else {
+                printf("%d. %s\n", i, options[i]);
+            }
+        }
+
+        if (message != "") std::cout << message;
+
+        switch (getchar()) {
+            case 'w': {
+                chosenOption = (chosenOption - 1 + numOptions) % numOptions;
+                break;
+            }
+            case 's': {
+                chosenOption = (chosenOption + 1) % numOptions;
+                break;
+            }
+            case '\n':
+                return chosenOption;
+            default: break;
+        }
+    }
+}
+
 int main () {
+
+
 
     termios oldt, newt;
     tcgetattr(
-# 171 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 273 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 171 "/home/kael/CLionProjects/Paint/main.cpp"
+# 273 "/home/kael/CLionProjects/Paint/main.cpp"
                          , &oldt);
     newt = oldt;
     newt.c_lflag &= ~(
-# 173 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 275 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                      0000002 
-# 173 "/home/kael/CLionProjects/Paint/main.cpp"
+# 275 "/home/kael/CLionProjects/Paint/main.cpp"
                             | 
-# 173 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 275 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                               0000010
-# 173 "/home/kael/CLionProjects/Paint/main.cpp"
+# 275 "/home/kael/CLionProjects/Paint/main.cpp"
                                   );
     tcsetattr(
-# 174 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 276 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 174 "/home/kael/CLionProjects/Paint/main.cpp"
+# 276 "/home/kael/CLionProjects/Paint/main.cpp"
                          , 
-# 174 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 276 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                            0
-# 174 "/home/kael/CLionProjects/Paint/main.cpp"
+# 276 "/home/kael/CLionProjects/Paint/main.cpp"
                                   , &newt);
 
 
-    Paint1();
-    system ("clear");
-    Paint2();
-    system ("clear");
-    UserImage();
+    char options[][1024] = {"Пример 1", "Пример 2", "Ввод рисунка", "Выход"};
+    std::string message = "Для перемещения между пунктами использовать W и S. Если не работает, попробуйте поменять раскладку.";
+    bool isRunning = true;
+
+    while (isRunning) {
+        switch (Menu(options, 4, message)) {
+            case 0: {
+                Paint1();
+                break;
+            }
+            case 1: {
+                Paint2();
+                break;
+            }
+            case 2: {
+                UserImage();
+                break;
+            }
+            default: {
+                isRunning = false;
+                break;
+            }
+        }
+
+        system("clear");
+    }
 
 
     tcsetattr(
-# 184 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 307 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
              0
-# 184 "/home/kael/CLionProjects/Paint/main.cpp"
+# 307 "/home/kael/CLionProjects/Paint/main.cpp"
                          , 
-# 184 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
+# 307 "/home/kael/CLionProjects/Paint/main.cpp" 3 4
                            0
-# 184 "/home/kael/CLionProjects/Paint/main.cpp"
+# 307 "/home/kael/CLionProjects/Paint/main.cpp"
                                   , &oldt);
 
  return 0;
