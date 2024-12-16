@@ -1,7 +1,8 @@
-#include <iostream>
+#include <stdio.h>
 #include <unistd.h>
-#include <cctype>
-#include <cstdio>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 #define uint unsigned int
 
 #ifdef _WIN32
@@ -12,14 +13,14 @@
     #define GETCHAR getch()
 #else
     #define CLEAR "clear"
-    #define PAUSE std::cin.get();
+    #define PAUSE getchar()
     #include <termios.h>
     #define GETCHAR getchar()
 #endif
 
-void PrintImage (char board[17][17], uint x = 17, uint y = 17, bool noPauses = false, std::string message = "", uint highlightX = -1, uint highlightY = -1) {
+void PrintImage (char board[17][17], uint x, uint y, bool noPauses, char message[], uint highlightX, uint highlightY) {
     system (CLEAR);
-    std::cout << "   ";
+    printf ( "   ");
     for (uint i = 0; i < 17; i++) {
         if (i == x) printf("\x1B[42m%02d\033[0m", i);
         else printf("%02d", i);
@@ -30,33 +31,34 @@ void PrintImage (char board[17][17], uint x = 17, uint y = 17, bool noPauses = f
         else printf("%02d|", i);
         for (int j = 0; j < 17; j ++){
             if (i == highlightY && j == highlightX) {
-                std::cout << "\x1B[47m  \033[0m";
+                printf( "\x1B[47m  \033[0m");
                 continue;
             }
             switch (board[i][j]) {
                 case ' ': {
-                    std::cout << "  ";
+                    printf( "  ");
                     break;
                 }
                 case '#': {
-                    std::cout << "\x1B[41m  \033[0m";
+                    printf ("\x1B[41m  \033[0m");
                     break;
                 }
                 case '@': {
-                    std::cout << "\x1B[44m  \033[0m";
+                    printf ("\x1B[44m  \033[0m");
                     break;
                 }
                 case '^': {
-                    std::cout << "\x1B[42m  \033[0m";
+                    printf ("\x1B[42m  \033[0m");
                     break;
                 }
+                default: break;
             }
         }
         printf("|\n");
         if (i == 16) {
-            if (y != 17 && x != 17)
+            if (y != -1 && x != -1)
                 printf("X : %02d; Y : %02d\n", x, y);
-            std::cout << message;
+            printf ("%s", message);
         }
     }
 
@@ -71,7 +73,7 @@ void Fill (uint x, uint y, char board[17][17]) {
     char c = board[y][x];
     if (c != '#' && c != '@'){
         board[y][x] = '@';
-        PrintImage(board, x , y);
+        PrintImage(board, x , y, false, "", -1, -1);
         Fill (x - 1, y, board);
         Fill (x + 1, y, board);
         Fill (x, y - 1, board);
@@ -123,11 +125,11 @@ void Paint2 () {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
     };
     Fill (2, 5, board);
-    PrintImage (board);
+    PrintImage (board, -1, -1, false, "", -1, -1);
 }
 
 void UserImage () {
-    std::cout << "\nВВОД РИСУНКА.\nИнструкция:\n1. Введите # чтобы создать границу\n2. Нажмите ^ чтобы обозначить стартовую точку\n3. Стартовая точка не может быть расположена на границе рисунка\n4. Стартовая точка может быть только одна\n";
+    printf ("\nВВОД РИСУНКА.\nИнструкция:\n1. Введите # чтобы создать границу\n2. Нажмите ^ чтобы обозначить стартовую точку\n3. Стартовая точка не может быть расположена на границе рисунка\n4. Стартовая точка может быть только одна\n");
     PAUSE;
     const char _template[17][17] = {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -149,7 +151,7 @@ void UserImage () {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
     };
     char board[17][17] = {};
-    std::copy(&_template[0][0], &_template[0][0]+17*17,&board[0][0]);
+    memcpy(board, _template, 17 * 17 * sizeof (char));
 
     int startPointX = -1, startPointY = -1;
     bool startPaint = false;
@@ -186,17 +188,17 @@ void UserImage () {
             case 'r': {
                 y = 0;
                 x = 0;
-                std::copy(&_template[0][0], &_template[0][0]+17*17,&board[0][0]);
+                memcpy(board, _template, 17 * 17 * sizeof(char));
                 break;
             }
             case 'f': {
                 x = 0;
-                std::copy(&_template[y][0], &_template[y][16], &board[y][0]);
+                memcpy(board[y], _template[y], 17 * sizeof(char));
                 break;
             }
             case 'b': {
                 if (startPointX == -1 && startPointY == -1) {
-                    std::cout << "\n\033[37m\033[41mНет стартовой точки!!!\033[0m\n";
+                    printf ("\n\033[37m\033[41mНет стартовой точки!!!\033[0m\n");
                     PAUSE;
                 }
                 else startPaint = true;
@@ -233,10 +235,10 @@ void UserImage () {
         y = (y + 17) % 17;
     }
     Fill(startPointX, startPointY, board);
-    PrintImage(board, 17, 17, true);
+    PrintImage(board, 17, 17, true, "", -1, -1);
 }
 
-int Menu(char options[][1024], int numOptions, std::string message = "") {
+int Menu(char options[][1024], int numOptions, char message[]) {
     int chosenOption = 0;
 
     while (true) {
@@ -250,7 +252,7 @@ int Menu(char options[][1024], int numOptions, std::string message = "") {
             }
         }
 
-        if (message != "") std::cout << message;
+        printf ("%s", message);
 
         switch (GETCHAR) {
             case 'w': {
@@ -272,7 +274,7 @@ int main () {
 #if defined _WIN32
     SetConsoleOutputCP(65001);
 #else
-    termios oldt, newt;
+    struct termios oldt, newt;
     tcgetattr(STDIN_FILENO, &oldt);
     newt = oldt;
     newt.c_lflag &= ~(ICANON | ECHO);
@@ -280,7 +282,7 @@ int main () {
 #endif
 
     char options[][1024] = {"Пример 1", "Пример 2", "Ввод рисунка", "Выход"};
-    std::string message = "Для перемещения между пунктами использовать w и s. Для выбора пункта нажмите e (латинскую). Если не работает, попробуйте поменять раскладку.";
+    char message[] = "Для перемещения между пунктами использовать w и s. Для выбора пункта нажмите e (латинскую). Если не работает, попробуйте поменять раскладку.";
     bool isRunning = true;
 
     while (isRunning) {
