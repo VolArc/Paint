@@ -141,7 +141,6 @@ void Paint2 () {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
     };
     Fill (2, 5, board);
-    PrintImage (board, -1, -1, false, "", -1, -1);
 }
 
 void UserImage () {
@@ -198,7 +197,8 @@ void UserImage () {
                     startPointY = y;
                 }
 		else {
-			printf ("\n\033[37m\033[41mСтартовая точка не может быть на границе рисунка!!!\033[0m\n");
+			system (CLEAR);
+			printf ("\033[37m\033[41mСтартовая точка не может быть на границе рисунка!!!\033[0m\n");
 			PAUSE;
 		}
                 break;
@@ -215,8 +215,9 @@ void UserImage () {
             }
             case 'b': {
                 if (startPointX == -1 && startPointY == -1) {
-                    printf ("\n\033[37m\033[41mНет стартовой точки!!!\033[0m\n");
-                    PAUSE;
+			system (CLEAR);
+			printf ("\033[37m\033[41mНет стартовой точки!!!\033[0m\n");
+                    	PAUSE;
                 }
                 else startPaint = true;
                 break;
@@ -246,7 +247,6 @@ void UserImage () {
         y = (y + 17) % 17;
     }
     Fill(startPointX, startPointY, board);
-    PrintImage(board, 17, 17, true, "", -1, -1);
 }
 
 int Menu(char options[][1024], int numOptions, char message[]) {
@@ -258,7 +258,7 @@ int Menu(char options[][1024], int numOptions, char message[]) {
         for (int i = 0; i < numOptions; i++) {
             if (i == chosenOption) {
                 printf("\x1b[36m%d. %s\n\x1b[0m", i, options[i]);
-            } else {
+ 	    } else {
                 printf("%d. %s\n", i, options[i]);
             }
         }
@@ -315,6 +315,11 @@ int main () {
                 break;
             }
         }
+	if (isRunning) {
+		printf ("Нажмите q, чтобы вернуться в меню. . . ");
+		while (GETCHAR != 'q')
+		;
+	};
 
         system(CLEAR);
     }
