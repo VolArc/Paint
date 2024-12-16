@@ -29,7 +29,7 @@ void PrintImage (char board[17][17], uint x, uint y, bool noPauses, char message
     for (int i = 0; i < 17; i ++){
         if (y == i) printf("\x1B[42m%02d\033[0m|", i);
         else printf("%02d|", i);
-        for (int j = 0; j < 17; j ++){
+        for (int j = 0; j < 17; j ++) {
             if (i == highlightY && j == highlightX) {
                 printf( "\x1B[47m  \033[0m");
                 continue;
@@ -56,9 +56,25 @@ void PrintImage (char board[17][17], uint x, uint y, bool noPauses, char message
         }
         printf("|\n");
         if (i == 16) {
-            if (y != -1 && x != -1)
-                printf("X : %02d; Y : %02d\n", x, y);
-            printf ("%s", message);
+            if (y != -1 && x != -1) {
+                printf("X : %02d; Y : %02d", x, y);
+	    	switch (board[y][x]) {
+			case ' ': {
+				printf (" – Пусто");
+		      		break;		
+			}
+			case '#': {
+				printf (" – \x1B[41m\x1B[37mГраница\x1B[0m");
+		      		break;		
+			}
+			case '^': {
+				printf (" – \x1B[42m\x1B[37mСтартовая точка\x1B[0m");
+		      		break;		
+			}
+			default: break;
+		}
+	    }
+            printf ("\n%s", message);
         }
     }
 
@@ -129,8 +145,6 @@ void Paint2 () {
 }
 
 void UserImage () {
-    printf ("\nВВОД РИСУНКА.\nИнструкция:\n1. Введите # чтобы создать границу\n2. Нажмите ^ чтобы обозначить стартовую точку\n3. Стартовая точка не может быть расположена на границе рисунка\n4. Стартовая точка может быть только одна\n");
-    PAUSE;
     const char _template[17][17] = {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -158,14 +172,14 @@ void UserImage () {
     int y = 0, x = 0;
 
     while (!startPaint) {
-        PrintImage(board, x, y, true, "r - Стереть рисунок\nf - Стереть строку\nq - Вернуться в меню\nb - Начать закраску\nw, s, a, d - Вверх, вниз, влево, вправо", x, y);
+        PrintImage(board, x, y, true, "r - Стереть рисунок\nf - Стереть строку\nq - Вернуться в меню\nb - Начать закраску\nw, s, a, d – Вверх, вниз, влево, вправо\nt - Поставить границу\ny - Поставить стартовую точку\nПРОБЕЛ - Пустая точка\n", x, y);
         switch (GETCHAR) {
-            case '#': {
+            case 't': {
                 if (board[y][x] == '^') {
                     startPointX = -1;
                     startPointY = -1;
                 }
-                board[y][x++] = '#';
+                board[y][x] = '#';
                 break;
             }
             case ' ': {
@@ -173,21 +187,24 @@ void UserImage () {
                     startPointX = -1;
                     startPointY = -1;
                 }
-                board[y][x++] = ' ';
+                board[y][x] = ' ';
                 break;
             }
-            case '^': {
+            case 'y': {
                 if (y != 0 && x != 0 && y != 16 && x != 16) {
                     if (startPointX != -1 && startPointY != -1) board[startPointY][startPointX] = ' ';
                     board[y][x] = '^';
-                    startPointX = x ++;
+                    startPointX = x;
                     startPointY = y;
                 }
+		else {
+			printf ("\n\033[37m\033[41mСтартовая точка не может быть на границе рисунка!!!\033[0m\n");
+			PAUSE;
+		}
                 break;
             }
             case 'r': {
-                y = 0;
-                x = 0;
+      
                 memcpy(board, _template, 17 * 17 * sizeof(char));
                 break;
             }
@@ -225,12 +242,6 @@ void UserImage () {
             }
             default: break;
         }
-        if (y == 16 && x == 16) {
-            y = 0;
-            x = -1;
-        }
-        if (x == 17) y ++;
-        else if (x == -1) y --;
         x = (x + 17) % 17;
         y = (y + 17) % 17;
     }
@@ -282,7 +293,7 @@ int main () {
 #endif
 
     char options[][1024] = {"Пример 1", "Пример 2", "Ввод рисунка", "Выход"};
-    char message[] = "Для перемещения между пунктами использовать w и s. Для выбора пункта нажмите e (латинскую). Если не работает, попробуйте поменять раскладку.";
+    char message[] = "Для перемещения между пунктами использовать w и s. Для выбора пункта нажмите e (латинскую). Если не работает, попробуйте поменять раскладку. И отключите Caps Lock.";
     bool isRunning = true;
 
     while (isRunning) {
