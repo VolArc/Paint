@@ -18,6 +18,39 @@
     #define GETCHAR getchar()
 #endif
 
+int Menu(char options[][1024], int numOptions, char message[]) {
+    int chosenOption = 0;
+
+    while (true) {
+        system(CLEAR);
+
+        printf ("%s\n", message);
+
+        for (int i = 0; i < numOptions; i++) {
+            if (i == chosenOption) {
+                printf("\x1b[36m%d. %s\n\x1b[0m", i, options[i]);
+            } else {
+                printf("%d. %s\n", i, options[i]);
+            }
+        }
+
+        switch (GETCHAR) {
+            case 'w': {
+                chosenOption = (chosenOption - 1 + numOptions) % numOptions;
+                break;
+            }
+            case 's': {
+                chosenOption = (chosenOption + 1) % numOptions;
+                break;
+            }
+            case 'e':
+                return chosenOption;
+            default: break;
+        }
+    }
+}
+
+
 void PrintImage (char board[17][17], uint x, uint y, bool noPauses, char message[], uint highlightX, uint highlightY) {
     system (CLEAR);
     printf ( "   ");
@@ -51,6 +84,18 @@ void PrintImage (char board[17][17], uint x, uint y, bool noPauses, char message
                     printf ("\x1B[42m  \033[0m");
                     break;
                 }
+                case '$': {
+                    printf ("\x1B[43m  \033[0m");
+                    break;
+                }
+                case '%': {
+                    printf ("\x1B[45m  \033[0m");
+                    break;
+                }
+                case '&': {
+                    printf ("\x1B[46m  \033[0m");
+                    break;
+                }
                 default: break;
             }
         }
@@ -61,15 +106,15 @@ void PrintImage (char board[17][17], uint x, uint y, bool noPauses, char message
 	    	switch (board[y][x]) {
 			case ' ': {
 				printf (" – Пусто");
-		      		break;		
+		      		break;
 			}
 			case '#': {
 				printf (" – \x1B[41m\x1B[37mГраница\x1B[0m");
-		      		break;		
+		      		break;
 			}
 			case '^': {
 				printf (" – \x1B[42m\x1B[37mСтартовая точка\x1B[0m");
-		      		break;		
+		      		break;
 			}
 			default: break;
 		}
@@ -81,20 +126,40 @@ void PrintImage (char board[17][17], uint x, uint y, bool noPauses, char message
     if (!noPauses) PAUSE;
 }
 
-void Fill (uint x, uint y, char board[17][17]) {
-    if (x == 0 || y == 0 || x == 16 || y == 16) {
-        board[y][x] = '#';
-        return;
-    }
+void FillM (uint x, uint y, char board[17][17], int colorsNumber, int color) {
+    if (colorsNumber == 0) return;
     char c = board[y][x];
-    if (c != '#' && c != '@'){
-        board[y][x] = '@';
+    if (c == ' ' || c == '^'){
+        switch (color % colorsNumber) {
+            case 0: {
+                board[y][x] = '@';
+                break;
+            }
+            case 1: {
+                board[y][x] = '$';
+                break;
+            }
+            case 2: {
+                board[y][x] = '%';
+                break;
+            }
+            case 3: {
+                board[y][x] = '&';
+                break;
+            }
+
+        }
         PrintImage(board, x , y, false, "", -1, -1);
-        Fill (x - 1, y, board);
-        Fill (x + 1, y, board);
-        Fill (x, y - 1, board);
-        Fill (x, y + 1, board);
+        if (x != 0) FillM (x - 1, y, board, colorsNumber, ++color);
+        if (x != 16) FillM (x + 1, y, board, colorsNumber, ++color);
+        if (y != 0) FillM (x, y - 1, board, colorsNumber, ++color);
+        if (y != 16) FillM (x, y + 1, board, colorsNumber, ++color);
     }
+}
+
+void Fill (uint x, uint y, char board[17][17]) {
+    char options[][1024] = {"Назад", "Один", "Два", "Три", "Четыре"};
+    FillM (x, y, board, Menu(options , 5, "Выберите количество цветов:"), 0);
 }
 
 void Paint1 () {
@@ -190,21 +255,14 @@ void UserImage () {
                 break;
             }
             case 'y': {
-                if (y != 0 && x != 0 && y != 16 && x != 16) {
-                    if (startPointX != -1 && startPointY != -1) board[startPointY][startPointX] = ' ';
-                    board[y][x] = '^';
-                    startPointX = x;
-                    startPointY = y;
-                }
-		else {
-			system (CLEAR);
-			printf ("\033[37m\033[41mСтартовая точка не может быть на границе рисунка!!!\033[0m\n");
-			PAUSE;
-		}
+                if (startPointX != -1 && startPointY != -1) board[startPointY][startPointX] = ' ';
+                board[y][x] = '^';
+                startPointX = x;
+                startPointY = y;
                 break;
             }
             case 'r': {
-      
+
                 memcpy(board, _template, 17 * 17 * sizeof(char));
                 break;
             }
@@ -215,9 +273,9 @@ void UserImage () {
             }
             case 'b': {
                 if (startPointX == -1 && startPointY == -1) {
-			system (CLEAR);
-			printf ("\033[37m\033[41mНет стартовой точки!!!\033[0m\n");
-                    	PAUSE;
+                    system (CLEAR);
+                    printf ("\033[37m\033[41mНет стартовой точки!!!\033[0m\n");
+                    PAUSE;
                 }
                 else startPaint = true;
                 break;
@@ -249,37 +307,6 @@ void UserImage () {
     Fill(startPointX, startPointY, board);
 }
 
-int Menu(char options[][1024], int numOptions, char message[]) {
-    int chosenOption = 0;
-
-    while (true) {
-        system(CLEAR);
-
-        for (int i = 0; i < numOptions; i++) {
-            if (i == chosenOption) {
-                printf("\x1b[36m%d. %s\n\x1b[0m", i, options[i]);
- 	    } else {
-                printf("%d. %s\n", i, options[i]);
-            }
-        }
-
-        printf ("%s", message);
-
-        switch (GETCHAR) {
-            case 'w': {
-                chosenOption = (chosenOption - 1 + numOptions) % numOptions;
-                break;
-            }
-            case 's': {
-                chosenOption = (chosenOption + 1) % numOptions;
-                break;
-            }
-            case 'e':
-                return chosenOption;
-            default: break;
-        }
-    }
-}
 
 int main () {
 #if defined _WIN32
